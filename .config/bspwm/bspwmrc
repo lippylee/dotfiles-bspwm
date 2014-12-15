@@ -1,0 +1,17 @@
+#!/bin/sh
+bspc config window_gap 12
+bspc config presel_border_color "#e91e63"
+bspc config border_width 2
+bspc config borderless_monocle true
+bspc config gapless_monocle true
+
+bspc monitor -d 1 2 3 4 5 6 7 8 9 10
+
+bspc rule -a crx_nckgahadagoaajjgafhacjanaoiihapd desktop=^10
+bspc desktop ^2 -l monocle
+
+feh --bg-fill ~/Pictures/Wallpapers/Mountain.png
+compton --config ~/.config/compton.conf -b
+wmname LG3D
+
+~/.config/bar/panel &

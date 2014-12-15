@@ -1,0 +1,139 @@
+#! /bin/sh
+
+source ~/.config/bar/panel_style
+
+screen_width=$(sres -W)
+battery_width="0"
+center_icon_length="0"
+
+function text_width() {
+    txtw -f $font -s $font_size "$(echo "$1" | sed 's/\^[a-z]\+([^)]*)//g')"
+}
+
+while read -r line ; do
+    case $line in
+        C*)
+            # clock
+            clock="${line#?}"
+            ;;
+        B*)
+            # battery
+            perc=$(cut -d " " -f 2 <<< ${line#?})
+            status=$(cut -d " " -f 1 <<< ${line#?})
+            icon="^i(/home/nauxuron/.config/bar/bitmaps/batt_$(bc <<< "($perc/10  + (($perc%10) > 4))").xbm)"
+            battery_width="12"
+            case $status in
+                Discharging)
+                    ;;
+                Charging)
+                    icon="$icon^i(/home/nauxuron/.config/bar/bitmaps/power.xbm)"
+                    battery_width="24"
+                    ;;
+                Unknown)
+                    icon="$icon^i(/home/nauxuron/.config/bar/bitmaps/power.xbm)"
+                    battery_width="24"
+                    ;;
+                Full)
+                    icon="$icon^i(/home/nauxuron/.config/bar/bitmaps/power.xbm)"
+                    battery_width="24"
+                    ;;
+            esac
+            battery="$icon"
+            ;;
+        W*)
+            wminfo=""
+            IFS=":"
+            read -a wmarr <<< "$line"
+            for item in "${wmarr[@]}"
+            do
+                case $item in
+                    [OoFfUu]*)
+                        # desktops
+                        name=${item#?}
+                        case $item in
+                            O*)
+                                # focused occupied desktop
+                                ICO="^i(/home/nauxuron/.config/bar/bitmaps/occ_sel.xbm)"
+                                ;;
+                            F*)
+                                # focused free desktop
+                                ICO="^i(/home/nauxuron/.config/bar/bitmaps/emp_sel.xbm)"
+                                ;;
+                            U*)
+                                # focused urgent desktop
+                                ICO="^fg($WM_COLOR_URGENT)^i(/home/nauxuron/.config/bar/bitmaps/occ_sel.xbm)^fg()"
+                                ;;
+                            o*)
+                                # occupied desktop
+                                ICO="^i(/home/nauxuron/.config/bar/bitmaps/occ.xbm)"
+                                ;;
+                            f*)
+                                # free desktop
+                                ICO="^i(/home/nauxuron/.config/bar/bitmaps/emp.xbm)"
+                                ;;
+                            u*)
+                                # urgent desktop
+                                ICO="^fg($WM_COLOR_URGENT)^i(/home/nauxuron/.config/bar/bitmaps/occ.xbm)^fg()"
+                                ;;
+                        esac
+                        wminfo="$wminfo $ICO"                        
+                    ;;
+                esac
+            done
+            IFS=" "
+            wminfo="${wminfo#?}"
+            center_icon_length=$((${#wmarr[@]} * 11))
+            ;;
+        I*)
+            nw=${line#?}
+            case $nw in
+                L)
+                    nwicon="^i(/home/nauxuron/.config/bar/bitmaps/lan.xbm)"
+                    ;;
+                unk)
+                    nwicon="^i(/home/nauxuron/.config/bar/bitmaps/disconnected.xbm)"
+                    ;;
+                [0-9]*)
+                    nwicon="^i(/home/nauxuron/.config/bar/bitmaps/wifi_$(bc <<< $nw/17).xbm)"
+                    ;;
+            esac
+            ;;
+        S*)
+            cpu="^i(/home/nauxuron/.config/bar/bitmaps/cpu.xbm) $(cut -d ':' -f1 <<< ${line#?})%"
+            ram="^i(/home/nauxuron/.config/bar/bitmaps/ram.xbm) $(cut -d ':' -f2 <<< ${line#?})"
+            root="$(cut -d ':' -f3 <<< ${line#?})"
+            home="$(cut -d ':' -f4 <<< ${line#?})"
+            diskinfo="^i(/home/nauxuron/.config/bar/bitmaps/disk.xbm) /: $root   ^i(/home/nauxuron/.config/bar/bitmaps/home.xbm): $home"
+            ;;
+        V*)
+            vol=${line#?}
+            case $vol in
+                M*)
+                    volume="^i(/home/nauxuron/.config/bar/bitmaps/volm.xbm)"
+                    ;;
+                U*)
+                    volume="^i(/home/nauxuron/.config/bar/bitmaps/vol.xbm)"
+                    ;;
+            esac
+            volume="$volume ^i(/tmp/volumebar.xbm)"
+            ;;
+        U*)
+            uptime=${line#?}
+            ;;
+    esac
+
+    left_string="^bg($COLOR_BACKGROUND) $cpu ^fg($COLOR_BACKGROUND)^bg($COLOR_BACKGROUND2)$triangle_left ^fg()$ram ^fg($COLOR_BACKGROUND2)^bg($COLOR_BACKGROUND3)$triangle_left ^fg()$diskinfo ^fg($COLOR_BACKGROUND3)^bg($COLOR_BACKGROUND4)$triangle_left ^fg()$uptime ^fg($COLOR_BACKGROUND4)^bg($COLOR_BACKGROUND5)$triangle_left"
+    center_string="^fg($COLOR_BACKGROUND5)^bg($WM_COLOR_BACKGROUND)$triangle_left^fg() $wminfo ^fg($COLOR_BACKGROUND5)$triangle_right^bg($COLOR_BACKGROUND5)"
+    right_string="^fg($COLOR_BACKGROUND4)$triangle_right^fg()^bg($COLOR_BACKGROUND4) $volume ^fg($COLOR_BACKGROUND3)$triangle_right^fg()^bg($COLOR_BACKGROUND3) $nwicon ^fg($COLOR_BACKGROUND2)$triangle_right^fg()^bg($COLOR_BACKGROUND2) $battery ^fg($COLOR_BACKGROUND)$triangle_right^fg()^bg($COLOR_BACKGROUND) $clock"
+
+    center_text_width=$(text_width "$center_string")
+    center_text_width=$(($center_text_width + 20 + $center_icon_length))
+    panel_center=$(($screen_width / 2))
+    center_text_pos=$(($panel_center - ($center_text_width / 2)))
+
+    right_text_width=$(text_width "$right_string")
+    right_text_width=$(($right_text_width + (40 + $battery_width + 20 + 10 + 104)))
+    right_text_pos=$(($screen_width - $right_text_width - $TRAY_WIDTH))
+
+    printf "%s\n" "$left_string^pa($center_text_pos)$center_string^pa($right_text_pos)$right_string"
+done

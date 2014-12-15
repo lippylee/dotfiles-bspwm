@@ -1,0 +1,17 @@
+out_to_x no
+own_window no
+out_to_console yes
+background no
+update_interval 1
+
+total_run_times 0
+
+cpu_avg_samples 1
+short_units yes
+
+TEXT
+
+${exec $HOME/.config/bar/volume.sh}
+S${cpu}:${mem}/${memmax}:${fs_used /}/${fs_size /}:${fs_used /home}/${fs_size /home}
+I${if_match "${addr enp3s0}"=="No Address"}${wireless_link_qual_perc wlp5s0}${else}L${endif}
+U${uptime}

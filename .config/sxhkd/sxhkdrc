@@ -1,0 +1,77 @@
+alt + shift + e
+	close_bspwm	
+
+alt + shift + q
+	bspc window -c
+
+alt + shift + r
+        killall panel && /home/nauxuron/.config/bar/panel
+
+alt + {_,shift + }{1-9,0}
+	bspc {desktop -f, window -d} ^{1-9,10}
+
+alt + {_,shift + ,ctrl + shift + }{h,j,k,l}
+	bspc window -{f,s,p} {left,down,up,right}
+
+alt + p
+	bspc window -w last.manual
+
+~Escape
+	bspc desktop -c
+
+alt + shift + {space,f}
+	bspc window -t {floating,fullscreen}
+
+alt + button{1-3}
+	bspc pointer -g {move,resize_side,resize_corner}
+
+alt + !button{1-3}
+	bspc pointer -t %i %i
+
+alt + @button{1-3}
+	bspc pointer -u
+
+~button1
+	bspc pointer -g focus
+
+alt + Tab
+	bspc desktop -l next
+
+alt + t
+	urxvt
+
+alt + d
+	j4-dmenu-desktop --dmenu='dmenu -fn Monospace -x 810 -y 480 -w 300 -h 20  -p ">" -l 5 -i -nf "#ffc107" -nb "#263238" -sf "#263238" -sb "#ffc107"'
+
+alt + F1
+	google-chrome-stable
+
+alt + F2
+	subl3
+
+alt + F3
+	spacefm
+
+alt + F4
+	thunderbird
+
+alt + {F11,F12}
+	close_bspwm && systemctl -i {reboot,poweroff}
+
+XF86MonBrightness{Up,Down}
+	xbacklight -{inc,dec} 10
+
+XF86Audio{Raise,Lower}Volume
+	ponymix {increase,decrease} 2
+
+XF86AudioMute
+	ponymix toggle
+
+super + l
+	~/.config/bspwm/lock.sh
+
+{_,ctrl + }Print
+	sleep 0.1; scrot {_,-s} '%Y-%m-%d_%T.png' -e 'mv $f ~/Pictures/Screenshots'
+
+super + Escape
+	pkill -USR1 -x sxhkd

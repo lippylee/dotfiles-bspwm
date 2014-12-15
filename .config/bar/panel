@@ -1,0 +1,23 @@
+#! /bin/sh
+
+if [ $(pgrep -cx panel) -gt 1 ] ; then
+	printf "%s\n" "The panel is already running." >&2
+	exit 1
+fi
+
+trap 'trap - TERM; kill 0' INT TERM QUIT EXIT
+
+[ -e "$PANEL_FIFO" ] && rm "$PANEL_FIFO"
+mkfifo "$PANEL_FIFO"
+
+bspc config top_padding $PANEL_HEIGHT
+bspc control --subscribe > "$PANEL_FIFO" &
+battery -n1 -sf "B%s %i" > "$PANEL_FIFO" &
+clock -sf 'C%A %d %B %H:%M' > "$PANEL_FIFO" &
+conky -c ~/.config/bar/conkyrc > "$PANEL_FIFO" &
+
+source ~/.config/bar/panel_style
+
+cat "$PANEL_FIFO" | ~/.config/bar/panel_dzen2 | dzen2 -ta l -h $PANEL_HEIGHT -fn "$font:pixelsize=$font_size" -fg "$COLOR_FOREGROUND" -bg "$COLOR_BACKGROUND5" -e "button3=" &
+(sleep 1 && trayer --widthtype pixel --width $(($TRAY_WIDTH + 1)) --heighttype pixel --height $PANEL_HEIGHT --edge top --align right --transparent true --alpha 0 --tint "0x${COLOR_BACKGROUND#?}") &
+wait

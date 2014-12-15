@@ -1,0 +1,4 @@
+google-chrome-stable --no-startup-window &
+redshift -l 52:4.3 -t 6600:3400 &
+dropboxd &
+pulseaudio --start &
