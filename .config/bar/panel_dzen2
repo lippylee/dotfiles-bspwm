@@ -20,21 +20,21 @@ while read -r line ; do
             # battery
             perc=$(cut -d " " -f 2 <<< ${line#?})
             status=$(cut -d " " -f 1 <<< ${line#?})
-            icon="^i(/home/nauxuron/.config/bar/bitmaps/batt_$(bc <<< "($perc/10  + (($perc%10) > 4))").xbm)"
+            icon="^i($HOME/.config/bar/bitmaps/batt_$(bc <<< "($perc/10  + (($perc%10) > 4))").xbm)"
             battery_width="12"
             case $status in
                 Discharging)
                     ;;
                 Charging)
-                    icon="$icon^i(/home/nauxuron/.config/bar/bitmaps/power.xbm)"
+                    icon="$icon^i($HOME/.config/bar/bitmaps/power.xbm)"
                     battery_width="24"
                     ;;
                 Unknown)
-                    icon="$icon^i(/home/nauxuron/.config/bar/bitmaps/power.xbm)"
+                    icon="$icon^i($HOME/.config/bar/bitmaps/power.xbm)"
                     battery_width="24"
                     ;;
                 Full)
-                    icon="$icon^i(/home/nauxuron/.config/bar/bitmaps/power.xbm)"
+                    icon="$icon^i($HOME/.config/bar/bitmaps/power.xbm)"
                     battery_width="24"
                     ;;
             esac
@@ -53,27 +53,27 @@ while read -r line ; do
                         case $item in
                             O*)
                                 # focused occupied desktop
-                                ICO="^i(/home/nauxuron/.config/bar/bitmaps/occ_sel.xbm)"
+                                ICO="^i($HOME/.config/bar/bitmaps/occ_sel.xbm)"
                                 ;;
                             F*)
                                 # focused free desktop
-                                ICO="^i(/home/nauxuron/.config/bar/bitmaps/emp_sel.xbm)"
+                                ICO="^i($HOME/.config/bar/bitmaps/emp_sel.xbm)"
                                 ;;
                             U*)
                                 # focused urgent desktop
-                                ICO="^fg($WM_COLOR_URGENT)^i(/home/nauxuron/.config/bar/bitmaps/occ_sel.xbm)^fg()"
+                                ICO="^fg($WM_COLOR_URGENT)^i($HOME/.config/bar/bitmaps/occ_sel.xbm)^fg()"
                                 ;;
                             o*)
                                 # occupied desktop
-                                ICO="^i(/home/nauxuron/.config/bar/bitmaps/occ.xbm)"
+                                ICO="^i($HOME/.config/bar/bitmaps/occ.xbm)"
                                 ;;
                             f*)
                                 # free desktop
-                                ICO="^i(/home/nauxuron/.config/bar/bitmaps/emp.xbm)"
+                                ICO="^i($HOME/.config/bar/bitmaps/emp.xbm)"
                                 ;;
                             u*)
                                 # urgent desktop
-                                ICO="^fg($WM_COLOR_URGENT)^i(/home/nauxuron/.config/bar/bitmaps/occ.xbm)^fg()"
+                                ICO="^fg($WM_COLOR_URGENT)^i($HOME/.config/bar/bitmaps/occ.xbm)^fg()"
                                 ;;
                         esac
                         wminfo="$wminfo $ICO"                        
@@ -88,31 +88,31 @@ while read -r line ; do
             nw=${line#?}
             case $nw in
                 L)
-                    nwicon="^i(/home/nauxuron/.config/bar/bitmaps/lan.xbm)"
+                    nwicon="^i($HOME/.config/bar/bitmaps/lan.xbm)"
                     ;;
                 unk)
-                    nwicon="^i(/home/nauxuron/.config/bar/bitmaps/disconnected.xbm)"
+                    nwicon="^i($HOME/.config/bar/bitmaps/disconnected.xbm)"
                     ;;
                 [0-9]*)
-                    nwicon="^i(/home/nauxuron/.config/bar/bitmaps/wifi_$(bc <<< $nw/17).xbm)"
+                    nwicon="^i($HOME/.config/bar/bitmaps/wifi_$(bc <<< $nw/17).xbm)"
                     ;;
             esac
             ;;
         S*)
-            cpu="^i(/home/nauxuron/.config/bar/bitmaps/cpu.xbm) $(cut -d ':' -f1 <<< ${line#?})%"
-            ram="^i(/home/nauxuron/.config/bar/bitmaps/ram.xbm) $(cut -d ':' -f2 <<< ${line#?})"
+            cpu="^i($HOME/.config/bar/bitmaps/cpu.xbm) $(cut -d ':' -f1 <<< ${line#?})%"
+            ram="^i($HOME/.config/bar/bitmaps/ram.xbm) $(cut -d ':' -f2 <<< ${line#?})"
             root="$(cut -d ':' -f3 <<< ${line#?})"
             home="$(cut -d ':' -f4 <<< ${line#?})"
-            diskinfo="^i(/home/nauxuron/.config/bar/bitmaps/disk.xbm) /: $root   ^i(/home/nauxuron/.config/bar/bitmaps/home.xbm): $home"
+            diskinfo="^i($HOME/.config/bar/bitmaps/disk.xbm) /: $root   ^i($HOME/.config/bar/bitmaps/home.xbm): $home"
             ;;
         V*)
             vol=${line#?}
             case $vol in
                 M*)
-                    volume="^i(/home/nauxuron/.config/bar/bitmaps/volm.xbm)"
+                    volume="^i($HOME/.config/bar/bitmaps/volm.xbm)"
                     ;;
                 U*)
-                    volume="^i(/home/nauxuron/.config/bar/bitmaps/vol.xbm)"
+                    volume="^i($HOME/.config/bar/bitmaps/vol.xbm)"
                     ;;
             esac
             volume="$volume ^i(/tmp/volumebar.xbm)"

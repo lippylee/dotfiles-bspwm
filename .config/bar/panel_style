@@ -10,8 +10,8 @@ WM_COLOR_URGENT='#ff9800'
 WM_COLOR_BACKGROUND="${COLOR_BACKGROUND}"
 
 # triangles
-triangle_left="^i(/home/nauxuron/.config/bar/bitmaps/left_arrow.xbm)"
-triangle_right="^i(/home/nauxuron/.config/bar/bitmaps/right_arrow.xbm)"
+triangle_left="^i($HOME/.config/bar/bitmaps/left_arrow.xbm)"
+triangle_right="^i($HOME/.config/bar/bitmaps/right_arrow.xbm)"
 
 # font settings
 font="monospace"
