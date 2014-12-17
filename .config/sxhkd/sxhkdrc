@@ -5,7 +5,7 @@ alt + shift + q
 	bspc window -c
 
 alt + shift + r
-        killall panel && /home/nauxuron/.config/bar/panel
+        killall panel && ~/.config/bar/panel
 
 alt + {_,shift + }{1-9,0}
 	bspc {desktop -f, window -d} ^{1-9,10}
