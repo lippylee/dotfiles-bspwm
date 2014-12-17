@@ -41,7 +41,7 @@ alt + t
 	urxvt
 
 alt + d
-	j4-dmenu-desktop --dmenu='dmenu -fn Monospace -x 810 -y 480 -w 300 -h 20  -p ">" -l 5 -i -nf "#ffc107" -nb "#263238" -sf "#263238" -sb "#ffc107"'
+	j4-dmenu-desktop --dmenu='dmenu -fn Monospace -x 810 -y 480 -w 300 -h 20  -p ">" -l 5 -i -nf "#e0e0e0" -nb "#2c3e50" -sf "#2c3e50" -sb "#e0e0e0"'
 
 alt + F1
 	google-chrome-stable
