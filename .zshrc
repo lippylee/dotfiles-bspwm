@@ -51,7 +51,7 @@ source $ZSH/oh-my-zsh.sh
 
 # User configuration
 
-export PATH=$HOME/bin:/usr/local/bin:$PATH:.config/bar
+export PATH=$HOME/bin:/usr/local/bin:$PATH
 export VISUAL=/usr/bin/vim
 export EDITOR=/usr/bin/vim
 
